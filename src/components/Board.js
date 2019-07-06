@@ -9,11 +9,15 @@ export default class Board extends Component {
         gameMap: this.props.gameMap
     }
 
-    renderCells = (row) => {
+    calculateDimensions = (size) => {
+        return {"width": "105px", "height": "105px"}
+    }
+
+    renderCellsInRow = (row, dimensions) => {
         return (
             row.map((column, _) => {
                 return (
-                    <Cell isMine={column} />
+                    <Cell isMine={column} dimensions={dimensions} />
                 )
             })
         )
@@ -24,9 +28,10 @@ export default class Board extends Component {
         return (
             <Wrapper>
                 {gameMap.map((row, _) => {
+                    const dimensions = this.calculateDimensions(row.size);
                     return (
                         <BoardRow>
-                            {this.renderCells(row)}
+                            {this.renderCellsInRow(row, dimensions)}
                         </BoardRow>
                     )
                 })}
