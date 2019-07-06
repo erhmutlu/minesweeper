@@ -10,14 +10,19 @@ export default class Board extends Component {
     }
 
     calculateDimensions = (size) => {
-        return {"width": "105px", "height": "105px"}
+        return { "width": "35px", "height": "35px" }
     }
 
-    renderCellsInRow = (row, dimensions) => {
+    handleClick(rowIndex, columnIndex) {
+        console.log(rowIndex + ":" + columnIndex);
+      }
+
+    renderCellsInRow = (row, rowIndex, dimensions) => {
         return (
-            row.map((column, _) => {
+            row.map((column, columnIndex) => {
                 return (
-                    <Cell isMine={column} dimensions={dimensions} />
+                    <Cell key={"row" + rowIndex + "column" + columnIndex} isMine={column} dimensions={dimensions}
+                        onClick={() => this.handleClick(rowIndex, columnIndex)} />
                 )
             })
         )
@@ -27,11 +32,11 @@ export default class Board extends Component {
         const { gameMap } = this.state;
         return (
             <Wrapper>
-                {gameMap.map((row, _) => {
+                {gameMap.map((row, index) => {
                     const dimensions = this.calculateDimensions(row.size);
                     return (
-                        <BoardRow>
-                            {this.renderCellsInRow(row, dimensions)}
+                        <BoardRow key={"row" + index}>
+                            {this.renderCellsInRow(row, index, dimensions)}
                         </BoardRow>
                     )
                 })}

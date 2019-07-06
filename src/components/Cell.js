@@ -10,10 +10,13 @@ export default class Cell extends PureComponent {
 
     render() {
         const { isMine } = this.state;
-        const { dimensions } = this.props;
+        const { dimensions, onClick } = this.props;
         return (
-            <StyledSquare h={dimensions.height} w={dimensions.width}>
-                {isMine ? <div>X</div> : <div>O</div>}
+            <StyledSquare h={dimensions.height} w={dimensions.width} onClick={onClick}>
+                {isMine ? 
+                    <div>X</div> 
+                : 
+                    <div>-</div>}
             </StyledSquare>
         )
     }
