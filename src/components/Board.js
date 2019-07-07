@@ -14,15 +14,17 @@ export default class Board extends Component {
     }
 
     handleClick(rowIndex, columnIndex) {
-        console.log(rowIndex + ":" + columnIndex);
+        const {gameMap} = this.state;
+        gameMap[rowIndex][columnIndex] = true
+        this.setState({gameMap: gameMap});
       }
 
     renderCellsInRow = (row, rowIndex, dimensions) => {
         return (
-            row.map((column, columnIndex) => {
+            row.map((column, index) => {
                 return (
-                    <Cell key={"row" + rowIndex + "column" + columnIndex} isMine={column} dimensions={dimensions}
-                        onClick={() => this.handleClick(rowIndex, columnIndex)} />
+                    <Cell key={index} isMine={column} dimensions={dimensions}
+                        onClick={() => this.handleClick(rowIndex, index)} />
                 )
             })
         )
@@ -35,7 +37,7 @@ export default class Board extends Component {
                 {gameMap.map((row, index) => {
                     const dimensions = this.calculateDimensions(row.size);
                     return (
-                        <BoardRow key={"row" + index}>
+                        <BoardRow key={index}>
                             {this.renderCellsInRow(row, index, dimensions)}
                         </BoardRow>
                     )

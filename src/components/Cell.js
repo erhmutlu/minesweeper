@@ -1,16 +1,15 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export default class Cell extends PureComponent {
+export default class Cell extends Component {
 
-    state = {
-        isMine: this.props.isMine
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.isMine !== nextProps.isMine
     }
 
     render() {
-        const { isMine } = this.state;
-        const { dimensions, onClick } = this.props;
+        const { dimensions, onClick, isMine } = this.props;
         return (
             <StyledSquare h={dimensions.height} w={dimensions.width} onClick={onClick}>
                 {isMine ? 
