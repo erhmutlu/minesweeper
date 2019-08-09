@@ -6,7 +6,20 @@ import Cell from './Cell'
 export default class Board extends Component {
 
     state = {
-        gameMap: this.props.gameMap
+        gameMap: this.prepareExtendedGameMap(this.props.gameMap)
+    }
+
+    prepareExtendedGameMap(gameMap) {
+        const map = []
+        gameMap.map((row, rowIndex) => {
+            map[rowIndex] = []
+            return (
+                row.map((column, columnIndex) =>
+                    map[rowIndex][columnIndex] = { isMine: column, visibleContent: false }
+                )
+            )
+        })
+        return map
     }
 
     calculateDimensions = (size) => {
@@ -14,16 +27,17 @@ export default class Board extends Component {
     }
 
     handleClick(rowIndex, columnIndex) {
-        const {gameMap} = this.state;
-        gameMap[rowIndex][columnIndex] = true
-        this.setState({gameMap: gameMap});
-      }
+        const { gameMap } = this.state;
+        gameMap[rowIndex][columnIndex] = { ...gameMap[rowIndex][columnIndex], visibleContent: true } //burayı güncellemek lazım. dışarıdan Cell'in contentVisible prop'ını güncellemek lazım
+        this.setState({ gameMap: gameMap });
+    }
 
     renderCellsInRow = (row, rowIndex, dimensions) => {
         return (
             row.map((column, index) => {
+                const { isMine, visibleContent } = column;
                 return (
-                    <Cell key={index} isMine={column} dimensions={dimensions}
+                    <Cell key={index} isMine={isMine} visibleContent={visibleContent} dimensions={dimensions}
                         onClick={() => this.handleClick(rowIndex, index)} />
                 )
             })

@@ -4,18 +4,30 @@ import styled from 'styled-components';
 
 export default class Cell extends Component {
 
+    state = {
+        visibleContent: false,
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.isMine !== nextProps.isMine
+        return this.props.visibleContent !== nextProps.visibleContent
+    }
+
+    handleClickEvent = (onClick) => {
+        // this.setState({contentVisible: true})
+        console.log("clicked")
+        onClick()
     }
 
     render() {
-        const { dimensions, onClick, isMine } = this.props;
+        const { dimensions, onClick, isMine, visibleContent } = this.props;
         return (
-            <StyledSquare h={dimensions.height} w={dimensions.width} onClick={onClick}>
-                {isMine ? 
-                    <div>X</div> 
-                : 
-                    <div>-</div>}
+            <StyledSquare h={dimensions.height} w={dimensions.width} onClick={() => this.handleClickEvent(onClick)}>
+                {visibleContent  ? 
+                    (isMine) ?
+                    <div>X</div>
+                    :
+                    <div>-</div>
+                : <div></div>}
             </StyledSquare>
         )
     }
