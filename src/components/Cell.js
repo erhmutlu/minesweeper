@@ -11,11 +11,7 @@ export class Cell extends Component {
 
     render() {
         const { onClick, visibleContent } = this.props;
-        return (
-            <StyledSquare h={Constants.DIMENSIONS.height} w={Constants.DIMENSIONS.width} onClick={() => onClick()}>
-                {visibleContent ? <div>-</div> : <div></div>}
-            </StyledSquare>
-        )
+        return renderSquare(visibleContent, '-', onClick)
     }
 }
 
@@ -28,20 +24,27 @@ export class MineCell extends Component {
 
     render() {
         const { onClick, visibleContent } = this.props;
-        return (
-            <StyledSquare h={Constants.DIMENSIONS.height} w={Constants.DIMENSIONS.width} onClick={() => onClick()}>
-                {visibleContent ? <div>X</div> : <div></div>}
-            </StyledSquare>
-        )
+        return renderSquare(visibleContent, 'X', onClick)
     }
 }
 
+const renderSquare = (visibleContent, content, onClick) => {
+    return (
+        <StyledSquare h={Constants.DIMENSIONS.height} w={Constants.DIMENSIONS.width} onClick={() => onClick()}>
+            {visibleContent ? <div>{content}</div> : <div></div>}
+        </StyledSquare>
+    )
+}
+
+
 Cell.propTypes = {
-    visibleContent: PropTypes.bool.isRequired
+    visibleContent: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired
 };
 
 MineCell.propTypes = {
-    visibleContent: PropTypes.bool.isRequired
+    visibleContent: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired
 };
 
 const StyledSquare = styled.div`
