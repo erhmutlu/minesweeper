@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
-import Cell from './Cell'
+import { MineCell, Cell } from './Cell'
 
 export default class Board extends Component {
 
@@ -22,23 +22,23 @@ export default class Board extends Component {
         return map
     }
 
-    calculateDimensions = (size) => {
-        return { "width": "35px", "height": "35px" }
-    }
-
     handleClick(rowIndex, columnIndex) {
         const { gameMap } = this.state;
         gameMap[rowIndex][columnIndex] = { ...gameMap[rowIndex][columnIndex], visibleContent: true } //burayı güncellemek lazım. dışarıdan Cell'in contentVisible prop'ını güncellemek lazım
         this.setState({ gameMap: gameMap });
     }
 
-    renderCellsInRow = (row, rowIndex, dimensions) => {
+    renderCellsInRow = (row, rowIndex) => {
         return (
             row.map((column, index) => {
                 const { isMine, visibleContent } = column;
                 return (
-                    <Cell key={index} isMine={isMine} visibleContent={visibleContent} dimensions={dimensions}
-                        onClick={() => this.handleClick(rowIndex, index)} />
+                    isMine ?
+                        <MineCell key={index} visibleContent={visibleContent}
+                            onClick={() => this.handleClick(rowIndex, index)} />
+                        :
+                        <Cell key={index} visibleContent={visibleContent}
+                            onClick={() => this.handleClick(rowIndex, index)} />
                 )
             })
         )
@@ -49,10 +49,9 @@ export default class Board extends Component {
         return (
             <Wrapper>
                 {gameMap.map((row, index) => {
-                    const dimensions = this.calculateDimensions(row.size);
                     return (
                         <BoardRow key={index}>
-                            {this.renderCellsInRow(row, index, dimensions)}
+                            {this.renderCellsInRow(row, index)}
                         </BoardRow>
                     )
                 })}

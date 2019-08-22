@@ -1,0 +1,1 @@
+export const DIMENSIONS = { "width": "35px", "height": "35px" }

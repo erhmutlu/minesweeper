@@ -1,40 +1,47 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import * as Constants from '../constants';
 
-export default class Cell extends Component {
-
-    state = {
-        visibleContent: false,
-    }
+export class Cell extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         return this.props.visibleContent !== nextProps.visibleContent
     }
 
-    handleClickEvent = (onClick) => {
-        // this.setState({contentVisible: true})
-        console.log("clicked")
-        onClick()
+    render() {
+        const { onClick, visibleContent } = this.props;
+        return (
+            <StyledSquare h={Constants.DIMENSIONS.height} w={Constants.DIMENSIONS.width} onClick={() => onClick()}>
+                {visibleContent ? <div>-</div> : <div></div>}
+            </StyledSquare>
+        )
+    }
+}
+
+
+export class MineCell extends Component {
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.visibleContent !== nextProps.visibleContent
     }
 
     render() {
-        const { dimensions, onClick, isMine, visibleContent } = this.props;
+        const { onClick, visibleContent } = this.props;
         return (
-            <StyledSquare h={dimensions.height} w={dimensions.width} onClick={() => this.handleClickEvent(onClick)}>
-                {visibleContent  ? 
-                    (isMine) ?
-                    <div>X</div>
-                    :
-                    <div>-</div>
-                : <div></div>}
+            <StyledSquare h={Constants.DIMENSIONS.height} w={Constants.DIMENSIONS.width} onClick={() => onClick()}>
+                {visibleContent ? <div>X</div> : <div></div>}
             </StyledSquare>
         )
     }
 }
 
 Cell.propTypes = {
-    isMine: PropTypes.bool.isRequired
+    visibleContent: PropTypes.bool.isRequired
+};
+
+MineCell.propTypes = {
+    visibleContent: PropTypes.bool.isRequired
 };
 
 const StyledSquare = styled.div`
